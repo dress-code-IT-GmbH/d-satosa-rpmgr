@@ -1,0 +1,57 @@
+= SATOSA Relying Party Manager
+
+== Funktion
+
+In dieser Webanwendung wird konfiguriert, welche SPs/RPs den Backend IDP verwenden können.
+
+Der Container beinhaltet folgende Objekte/Services/etc.:
+
+|===
+| Artefakt | Wert | Beschreibung
+| APPHOME | /opt/satosa_rpmgr | App Root Directory
+| satosa_rpmgr  | https://github.com/identinetics/satosa_rpmgr | Source Repo
+| Django Konfiguration | satosa_rpmgr.settings | Django Settings Modul
+| Logging | STDOUT/STDERR |
+| Startscript | /opt/bin/start.sh |
+|===
+
+
+== Vorbereitung der Installation
+
+Die Webanwendung ist mit einem Docker Container (Image rpmgr) realisiert.
+
+Das Service wird über einen externen Proxy angebunden, der TLS terminiert.
+
+Die Daten werden in der internen SQL-Lite Datenbank gespeichert.
+
+
+== Installation und Konfiguration
+
+Dieser Arbeitsschritt orientiert sich am Ablauf des Jenkins Jobs.
+
+Die Default-Konfiguration braucht nicht geändert werden.
+
+
+== Backup/Restore
+
+Die Datensicherung erfolgt, indem der Container terminiert wird und dann folgendes Verzeichniss gesichert wird:
+
+    /var/lib/docker/volumes/rpmgr.database/_data/*
+
+Für das Recovery wird die Daten db.sqllite3 vom Backup zurückzuholen.
+
+
+Als zweite Möglichkeit kann man auf App-Ebene ein Recovery durchführen:
+
+    * `docker-compose down`
+    * `docker volume rm postgres_dev.data`
+    * `docker-compose up -d`
+    * `manage.py migrate`
+    * `manage.py createsuperuser`
+    * `manage.py loaddata database/database.json`
+
+== Logging
+
+Die Webanwendung loggt auf stdout/stderr.
+Die Logfiles werden außerhalb des Containers verwaltet, z.B. mit `docker logs` oder einem Logging Driver.
+

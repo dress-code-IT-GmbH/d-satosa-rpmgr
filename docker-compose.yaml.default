@@ -1,0 +1,34 @@
+# Baseline config
+version: "3.5"
+services:
+  rpmgr:
+    image: local/rpmgr
+    container_name: rpmgr
+    command: /scripts/start.sh
+    #deploy:
+    #  placement:
+    #    constraints:
+    #      - node.hostname == nc8
+    #  replicas: 1
+    #  restart_policy:
+    #    condition: on-failure
+    environment:
+      DJANGO_SETTINGS_MODULE: rpmgr.settings_portaladmin
+    restart: unless-stopped
+    networks:
+      jenkins:
+    volumes:
+      - rpmgr.config:/config:Z
+      - rpmgr.database:/opt/satosa_rpmgr/database:Z
+
+networks:
+  jenkins:
+    name: jenkins
+    # driver: overlay
+    # attachable: true
+
+volumes:
+  rpmgr.config:
+    name: rpmgr.config
+  rpmgr.database:
+    name: rpmgr.database
