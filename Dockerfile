@@ -3,6 +3,7 @@ FROM centos:7
 RUN yum -y update \
  && yum -y install net-tools sudo wget \
  && yum -y install epel-release \
+ && yum -y install nginx \
  && yum clean all
 
 # install python3.6 (required minimum for this Django app)
@@ -21,16 +22,17 @@ RUN pip3.6 install virtualenv \
  && pip install -r /opt/satosa_rpmgr/requirements.txt
 COPY install/opt/bin/* /opt/bin/
 COPY install/etc/profile.d/satosa_rpmgr.sh /etc/profile.d/satosa_rpmgr.sh
-RUN chmod +x /scripts/*
+RUN chmod +x /opt/bin/*
 VOLUME /opt/satosa_rpmgr/database
 
-EXPOSE 8080
-
-
 # persist deployment-specific configuration
-RUN mkdir -p /config/etc/gunicorn
+RUN mkdir -p /config/etc/
 COPY install/etc /config/etc
-COPY install/PVZDweb/static_root /config/satosa_rpmgr/static/static
-VOLUME /config
+COPY install/satosa_rpmgr/static_root /config/satosa_rpmgr/static_root
 
+# nginx log files
+RUN mkdir -p /var/log/nginx/
+VOLUME /var/log/nginx/
+
+EXPOSE 8080
 SHELL ["/bin/bash", "-l", "-c"]

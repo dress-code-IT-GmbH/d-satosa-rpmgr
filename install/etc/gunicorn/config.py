@@ -18,7 +18,7 @@
 #       range.
 #
 
-bind = '127.0.0.1:8081'
+bind = '0.0.0.0:8080'
 backlog = 200
 
 #
@@ -67,7 +67,7 @@ backlog = 200
 
 workers = 1
 worker_class = 'sync'
-worker_connections = 1000
+worker_connections = 300
 timeout = 30
 keepalive = 2
 

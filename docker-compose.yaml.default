@@ -2,9 +2,11 @@
 version: "3.5"
 services:
   rpmgr:
-    image: local/rpmgr
+    build:
+      context: .
+    image: r2h2/rpmgr
     container_name: rpmgr
-    command: /scripts/start.sh
+    command: /opt/bin/start.sh
     #deploy:
     #  placement:
     #    constraints:
@@ -17,9 +19,12 @@ services:
     restart: unless-stopped
     networks:
       jenkins:
+    #ports:
+    #  - "8080:8080"
     volumes:
       - rpmgr.config:/config:Z
       - rpmgr.database:/opt/satosa_rpmgr/database:Z
+      - rpmgr.var_log_nginx:/var/log/nginx:Z
 
 networks:
   jenkins:
@@ -32,3 +37,5 @@ volumes:
     name: rpmgr.config
   rpmgr.database:
     name: rpmgr.database
+  rpmgr.var_log_nginx:
+    name: rpmgr.var_log_nginx

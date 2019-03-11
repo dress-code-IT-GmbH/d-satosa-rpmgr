@@ -47,8 +47,6 @@ pipeline {
                          nocacheopt='-c'
                          echo 'build with option nocache'
                     fi
-                    export MANIFEST_SCOPE='local'
-                    export PROJ_HOME='.'
                     docker-compose build $nocacheopt || \
                         (rc=$?; echo "build failed with rc rc?"; exit $rc)
                 '''
@@ -59,12 +57,14 @@ pipeline {
                 echo 'Setup unless already setup and running (keeping previously initialized data) '
                 sh '''#!/bin/bash -e
                     source ./jenkins_scripts.sh
+                    is_running=$(test_if_running $container)
+                    if [[ ! "$is_running" ]]; then
                         echo "start server"
-                        docker-compose $projop --no-ansi up -d tnadmin && echo ''
+                        docker-compose $projop --no-ansi up -d && echo ''
                     elif [[ ! "$start_clean" ]]; then
                         echo 'container already running: restart using the existing volumes'
                         docker-compose $projop down
-                        docker-compose $projop --no-ansi up -d tnadmin && echo ''
+                        docker-compose $projop --no-ansi up -d && echo ''
                     fi
                 '''
             }
@@ -77,8 +77,6 @@ pipeline {
                 sh '''#!/bin/bash -e
                     default_registry=$(docker info 2> /dev/null |egrep '^Registry' | awk '{print $2}')
                     echo "  Docker default registry: $default_registry"
-                    export MANIFEST_SCOPE='local'
-                    export PROJ_HOME='.'
                     docker-compose push
                 '''
             }
