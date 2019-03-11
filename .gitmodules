@@ -1,0 +1,3 @@
+[submodule "install/satosa_rpmgr"]
+	path = install/satosa_rpmgr
+	url = https://github.com/identinetics/satosa_rpmgr
