@@ -7,13 +7,6 @@ services:
     image: r2h2/rpmgr
     container_name: rpmgr
     command: /opt/bin/start.sh
-    #deploy:
-    #  placement:
-    #    constraints:
-    #      - node.hostname == nc8
-    #  replicas: 1
-    #  restart_policy:
-    #    condition: on-failure
     environment:
       DJANGO_SETTINGS_MODULE: rpmgr.settings_portaladmin
     restart: unless-stopped
@@ -29,8 +22,6 @@ services:
 networks:
   jenkins:
     name: jenkins
-    # driver: overlay
-    # attachable: true
 
 volumes:
   rpmgr.config:
