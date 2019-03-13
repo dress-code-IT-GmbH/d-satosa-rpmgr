@@ -1,7 +1,9 @@
 #!/bin/bash
 
-export PYTHONPATH=/opt/satosa_rpmgr
-export DJANGO_SETTINGS_MODULE=satosa_rpmgr.settings
+scriptsdir=$(cd "$(dirname ${BASH_SOURCE[0]})" && pwd)
+source $scriptsdir/setenv.sh
+
+$scriptsdir/init_database.sh
 
 # start nginx (used to serve static files)
 /usr/sbin/nginx -c /config/etc/nginx/nginx.conf

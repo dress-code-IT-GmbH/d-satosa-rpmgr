@@ -22,6 +22,8 @@ RUN yum -y install https://centos7.iuscommunity.org/ius-release.rpm \
 
 # install application
 COPY install/satosa_rpmgr /opt/satosa_rpmgr
+RUN mkdir -p /config/etc/satosa_rpmgr
+COPY install/satosa_rpmgr/satosa_rpmgr/settings_prod.py.default /config/etc/satosa_rpmgr/settings_prod.py
 COPY install/etc/gunicorn /config/etc/gunicorn
 COPY install/etc/profile.d/satosa_rpmgr.sh /etc/profile.d/satosa_rpmgr.sh
 COPY install/opt/bin /opt/bin
