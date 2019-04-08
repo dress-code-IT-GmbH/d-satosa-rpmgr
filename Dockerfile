@@ -21,6 +21,7 @@ RUN yum -y install https://centos7.iuscommunity.org/ius-release.rpm \
  && yum clean all
 
 # install application
+ENV APPHOME=/opt/satosa_rpmgr
 COPY install/satosa_rpmgr /opt/satosa_rpmgr
 RUN mkdir -p /config/etc/satosa_rpmgr
 COPY install/satosa_rpmgr/satosa_rpmgr/settings_prod.py.default /config/etc/satosa_rpmgr/settings_prod.py
@@ -31,10 +32,9 @@ RUN pip3.6 install virtualenv \
  && mkdir -p /opt/venv \
  && virtualenv --python=/usr/bin/python3.6 /opt/venv/satosa_rpmgr \
  && source /opt/venv/satosa_rpmgr/bin/activate \
- && pip install -r /opt/satosa_rpmgr/requirements.txt \
+ && pip install -r $APPHOME/requirements.txt \
  && chmod +x /opt/bin/*
 
-ENV APPHOME=/opt/satosa_rpmgr
 VOLUME /config \
        /opt/satosa_rpmgr/database \
        /var/log/nginx/
