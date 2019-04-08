@@ -1,6 +1,14 @@
 = SATOSA Relying Party Manager
 
-== Funktion
+== Übersicht
+
+.Dieser Container liefert:
+* Die Webanwendung als Container mit lokaler SQLITE Datenbank;
+* Die HTTP-Schnittstelle am konfigurierten Docker Netzwerk
+* Logfiles aus STDOUT und STDERR (Anwendung) und am volume /var/log/
+
+
+== Funktion der Webanwendung
 
 In dieser Webanwendung wird konfiguriert, welche SPs/RPs den Backend IDP verwenden können.
 
@@ -55,3 +63,21 @@ Als zweite Möglichkeit kann man auf App-Ebene ein Recovery durchführen:
 Die Webanwendung loggt auf stdout/stderr.
 Die Logfiles werden außerhalb des Containers verwaltet, z.B. mit `docker logs` oder einem Logging Driver.
 
+
+== Monitoring
+
+Port Monitoring auf dem HTTP-Port muss Status 302 mit Location auf /admin/ ergeben.
+
+== Signal Handling
+
+Um `docker stop` korrrekt zu verarbeiten, wird beim anfänglichen SIGTERM ein graceful shutdown eingeleitet.
+
+Erklärung: Docker verwendet von Haus aus 2 Signale:
+
+   * `docker stop` sendet erst SIGTERM, dann SIGKILL
+   * `docker kill --signal=<signal>` kann jedes Signal senden.
+
+Dieser Container leitet (beim Aufruf mit /opt/bin/start) SIGTERM sowohl an nginx (-> SIGQUIT) als auch gunicorn (-> SIGTERM) weiter.
+Damit wird ein graceful shutdown eingeleitet.
+
+Beim Aufruf von rotate_logs.sh wird intern ein USR1 Signal an den jeweiligen Prozess gesendet.

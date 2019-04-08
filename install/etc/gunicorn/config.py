@@ -100,6 +100,9 @@ spew = False
 #       A valid user id (as an integer) or the name of a user that
 #       can be retrieved with a call to pwd.getpwnam(value) or None
 #       to not change the worker process user.
+
+user = 'webapp'
+
 #
 #   group - Switch worker process to run as this group.
 #
@@ -124,7 +127,7 @@ spew = False
 
 daemon = False
 raw_env = [
-    'DJANGO_SECRET_KEY=something_generated_eg_with_openssl_rand_base64',
+    'DJANGO_SECRET_KEY=something_random_eg_openssl_rand_base64',
     'SPAM=eggs',
 ]
 pidfile = None
@@ -145,10 +148,10 @@ tmp_upload_dir = None
 #       A string of "debug", "info", "warning", "error", "critical"
 #
 
-accesslog = '-'
-errorlog = '-'
-#accesslog = '/var/log/webapp/access.log'
-#errorlog = '/var/log/webapp/error.log'
+#accesslog = '-'
+#errorlog = '-'
+accesslog = '/var/log/webapp/access.log'
+errorlog = '/var/log/webapp/error.log'
 loglevel = 'info'
 access_log_format = '%(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"'
 
