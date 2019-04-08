@@ -9,6 +9,7 @@ $scriptsdir/init_database.sh
 /usr/sbin/nginx -c /config/etc/nginx/nginx.conf
 
 # start gunicorn
+export PYTHONPATH=$APPHOME:/config/etc/satosa_rpmgr/
 source /etc/profile.d/satosa_rpmgr.sh
 gunicorn satosa_rpmgr.wsgi:application -c /config/etc/gunicorn/config.py &
 

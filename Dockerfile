@@ -34,6 +34,7 @@ RUN pip3.6 install virtualenv \
  && pip install -r /opt/satosa_rpmgr/requirements.txt \
  && chmod +x /opt/bin/*
 
+ENV APPHOME=/opt/satosa_rpmgr
 VOLUME /config \
        /opt/satosa_rpmgr/database \
        /var/log/nginx/
