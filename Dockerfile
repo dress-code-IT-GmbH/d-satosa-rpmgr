@@ -45,6 +45,7 @@ COPY install/etc/logrotate /opt/etc/logrotate
 ARG TIMEZONE='Europe/Vienna'
 VOLUME /opt/etc \
        /opt/satosa_rpmgr/database \
+       /opt/satosa_rpmgr/export \
        /var/log/nginx/
 EXPOSE 8080
 SHELL ["/bin/bash", "-l", "-c"]

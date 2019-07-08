@@ -19,6 +19,7 @@ services:
       - rpmgr.opt_etc:/opt/etc:Z
       - rpmgr.database:/opt/satosa_rpmgr/database:Z
       - rpmgr.var_log_nginx:/var/log/nginx:Z
+      - rpmgr.export:/opt/satosa_rpmgr/export:Z
 
 networks:
   jenkins:
