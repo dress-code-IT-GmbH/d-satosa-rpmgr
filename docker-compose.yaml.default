@@ -9,6 +9,7 @@ services:
     command: /opt/bin/start.sh
     environment:
       DJANGO_SETTINGS_MODULE: settings_prod
+      TARGET_ENTITYID: https://idp1.test.wpv.portalverbund.at/idp/shibboleth
     restart: unless-stopped
     networks:
       jenkins:
