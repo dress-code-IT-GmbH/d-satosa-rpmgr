@@ -32,13 +32,13 @@ COPY install/etc/gunicorn /opt/etc/gunicorn
 COPY install/etc/profile.d/satosa_rpmgr.sh /etc/profile.d/satosa_rpmgr.sh
 COPY install/bin /opt/bin
 RUN pip3.6 install virtualenv \
- && mkdir -p /opt/venv /var/log/webapp /var/run/webapp \
+ && mkdir -p /opt/venv /var/log/webapp /var/run/webapp $APPHOME/export \
  && virtualenv --python=/usr/bin/python3.6 /opt/venv/satosa_rpmgr \
  && source /opt/venv/satosa_rpmgr/bin/activate \
  && pip install -r $APPHOME/requirements.txt \
- && chmod +x /opt/bin/* \
+ && chmod +x /opt/bin/* /opt/satosa_rpmgr/bin/* \
  && adduser --user-group webapp \
- && chown -R webapp:webapp /var/run/webapp
+ && chown -R webapp:webapp /var/run/webapp $APPHOME/export
 
 COPY install/etc/logrotate /opt/etc/logrotate
 
