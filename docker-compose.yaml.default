@@ -16,19 +16,21 @@ services:
     #ports:
     #  - "8080:8080"
     volumes:
-      - rpmgr.opt_etc:/opt/etc:Z
       - rpmgr.database:/opt/satosa_rpmgr/database:Z
-      - rpmgr.var_log_nginx:/var/log/nginx:Z
       - rpmgr.export:/opt/satosa_rpmgr/export:Z
+      - rpmgr.opt_etc:/opt/etc:Z
+      - rpmgr.var_log_nginx:/var/log/nginx:Z
 
 networks:
   jenkins:
     name: jenkins
 
 volumes:
-  rpmgr.opt_etc:
-    name: rpmgr.opt_etc
   rpmgr.database:
     name: rpmgr.database
+  rpmgr.export:
+    name: rpmgr.export
+  rpmgr.opt_etc:
+    name: rpmgr.opt_etc
   rpmgr.var_log_nginx:
     name: rpmgr.var_log_nginx
