@@ -1,14 +1,14 @@
-#FROM centos:7
 FROM intra/ubi8-py36
+# intra/ubi8-py36 is a synonym to registry.access.redhat.com/ubi8/python-36
 
 USER root
 RUN yum -y update \
- && yum -y install logrotate net-tools sudo  \
+ && yum -y install iputils logrotate net-tools sudo  \
  && yum clean all
 
 # install nginx
 # (Rationale: gunicorn does not serve static files. To avoid an extra deployment interface,
-# nginx serves /static/ it within this container)
+# nginx serves /static/ within this container)
 RUN  yum -y install nginx \
  && yum clean all
 RUN mkdir -p /opt/etc/nginx /var/log/nginx/ /var/run/nginx/  \
