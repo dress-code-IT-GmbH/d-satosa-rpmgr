@@ -2,6 +2,7 @@ FROM intra/ubi8-py36
 # intra/ubi8-py36 is a synonym to registry.access.redhat.com/ubi8/python-36
 
 USER root
+RUN echo "proxy=http://urlgw.oe.wknet:8080/" >> /etc/dnf/dnf.conf
 RUN yum -y update \
  && yum -y install iputils logrotate net-tools sudo  \
  && yum clean all
@@ -25,11 +26,11 @@ COPY install/satosa_rpmgr/satosa_rpmgr/settings_prod.py.default /opt/etc/satosa_
 COPY install/etc/gunicorn /opt/etc/gunicorn
 COPY install/etc/profile.d/satosa_rpmgr.sh /etc/profile.d/satosa_rpmgr.sh
 COPY install/bin /opt/bin
-RUN python -m pip install virtualenv \
+RUN python -m pip --proxy http://urlgw.oe.wknet:8080 install virtualenv \
  && mkdir -p /opt/venv /var/log/webapp /var/run/webapp $APPHOME/export \
  && virtualenv /opt/venv/satosa_rpmgr \
  && source /opt/venv/satosa_rpmgr/bin/activate \
- && python -m pip install -r $APPHOME/requirements.txt \
+ && python -m pip --proxy http://urlgw.oe.wknet:8080 install -r $APPHOME/requirements.txt \
  && chmod +x /opt/bin/* /opt/satosa_rpmgr/bin/* \
  && adduser --user-group webapp \
  && chown -R webapp:webapp /var/run/webapp $APPHOME/export
